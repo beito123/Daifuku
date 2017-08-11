@@ -7,18 +7,27 @@ class CacheStore {
     const SEPARATION = "-";
 
     private $path;
+    private $prefix;
 
     public function __construct($path, $prefix = null) {
-        $this->path = realpath($path) . "/";
+        $this->path = $path . "/";
     }
 
     public function getPath() {
         return $this->path;
     }
 
+    public function getCacheKey() {
+        if($this->prefix !== null) {
+            return $prefix . self::SEPARATION .  $key;
+        }
+
+        return $key;
+    }
+
     public function getCachePath($key) {
         if($this->prefix !== null) {
-            return $this->path . $prefix . SEPARATION.  $key . ".dat";
+            return $this->path . $this->getCacheKey($key) . ".dat";
         }
 
         return $this->path . $key . ".dat";
@@ -38,6 +47,8 @@ class CacheStore {
         }
 
         $path = $this->getCachePath($key);
+
+        echo $path . "\n";
 
         $dir = dirname($path);
         if(!file_exists($dir) and !is_dir($dir)) {

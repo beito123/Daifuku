@@ -2,19 +2,20 @@
 
 namespace daifuku\provider;
 
+use daifuku\utils\Logger;
+
+use PDO;
+
 class ProviderSQLite implements Provider {
 
     public $path;
+
     public $closed = true;
 
     private $pdo = null;
 
-    public function getName() {
-        return "SQLite";
-    }
-
-    public function init(Logger $logger, $path = null) {
-        if($this->closed) {
+    public function __construct(Logger $logger, $path = null) {
+        if(!$this->closed) {
             return;
         }
 
@@ -27,10 +28,14 @@ class ProviderSQLite implements Provider {
             $this->logger->fatal("Set a path for database");
         }
 
-        $this->pdo = new PDO('sqlite:'. $path);
+        $this->pdo = new PDO('sqlite:' . $path);
 
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    }
+
+    public function getName() {
+        return "SQLite";
     }
 
     public function close() {
@@ -41,11 +46,15 @@ class ProviderSQLite implements Provider {
         }
     }
 
+    public function isClosed() {
+        return $this->closed;
+    }
+
     public function getLastTime($world, $off = 0) {
         $time = false;
 
         $b = [];
-        if($offset > 0) {
+        if($off > 0) {
             $b = $this->pdo->query("SELECT addtime_hour FROM " . $world .
                 " WHERE addtime_hour = (SELECT MAX(addtime_hour) FROM " . $world . " WHERE addtime_hour < " . $off . ") ORDER BY addtime_hour DESC LIMIT 1;")->fetchAll();
         } else {
@@ -129,6 +138,8 @@ class ProviderSQLite implements Provider {
                 }
             }
         }
+
+        return $data;
     }
 
     public function getWorldInfoRange($world, $every, $count, $from, $to) {

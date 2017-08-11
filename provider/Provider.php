@@ -2,7 +2,16 @@
 
 namespace daifuku\provider;
 
+use daifuku\utils\Logger;
+
 interface Provider {
+
+    /**
+     * Initialize the provider.
+     * @param $logger  logger
+     * @return boolean whether it succeeded or not
+     */
+    public function __construct(Logger $logger);
 
     /**
      * Returns the name of the provider.
@@ -11,17 +20,12 @@ interface Provider {
     public function getName();
 
     /**
-     * Initialize the provider.
-     * @param $logger  logger
-     * @return boolean whether it succeeded or not
-     */
-    public function init(Logger $logger);
-
-    /**
      * Close the provider.
      * @return void
      */
     public function close();
+
+    public function isClosed();
 
     /**
      * Returns whether data exists.
