@@ -98,6 +98,11 @@ class FileLogger implements Logger {
         $date = date(FileLogger::$dateFormat);
         $lvl = isset(FileLogger::$levels[$level]) ? FileLogger::$levels[$level]:FileLogger::$levels[Logger::LEVEL_INFO];
 
-        @fwrite($this->fp, "[" . $level . "]" . $date . ":" + $msg);//[LEVEL] 2017/07/01 12:15:12:MESSAGE
+        $m = $date . " [" . self::$levels[$level] . "]:" . $msg . "\n";
+        @fwrite($this->fp, $m);//[LEVEL] 2017/07/01 12:15:12:MESSAGE
+
+        if($this->debug) {
+            echo $m;
+        }
     }
 }

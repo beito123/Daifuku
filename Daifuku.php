@@ -31,8 +31,12 @@ class Daifuku {
         }
     }
 
+    public function isRegisteredWorld($world) {
+        return isset($this->worlds[$world]);
+    }
+
     public function getData($world, $every, $count, $cache = true) {
-        if(!isset($this->worlds[$world])) {
+        if(!$this->isRegisteredWorld()) {
             return false;
         }
 
