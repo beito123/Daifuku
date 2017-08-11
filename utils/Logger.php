@@ -18,7 +18,7 @@ interface Logger {
 
     public function error($msg);
 
-    public function fatal($msg);
+    public function fatal($msg, Exception $e = null);
 
     public function debug($msg);
 }

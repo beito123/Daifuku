@@ -13,9 +13,8 @@ class ClassLoader {
     public static function loadClass($class){
     	echo "test:" . $class . "\n";
         foreach (self::directories() as $directory) {
-            $file_name = "{$directory}/{$class}.php";
+            $file_name = $directory . "/". $class . ".php";
             
-
             if (is_file($file_name)) {
                 require $file_name;
 
@@ -35,8 +34,9 @@ class ClassLoader {
             self::$dirs = array(
                 // ここに読み込んでほしいディレクトリを足していきます
                 $base,
-                $base . '/provider',
-                $base . '/utils'
+                $base . "/provider",
+                $base . "/utils",
+                $base . "/parser"
             );
         }
 

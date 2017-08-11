@@ -61,18 +61,21 @@ class FileLogger implements Logger {
         $this->log($msg, Logger::LEVEL_ERROR);
     }
 
-    public function fatal($msg) {
+    public function fatal($msg, Exception $e = null) {
         $this->log($msg, Logger::LEVEL_FATAL);
 
         $dbg = debug_backtrace();
 
         $fun = isset($dbg[1]["function"]) ? $dbg[1]["function"] : "null";
-
-        $line = isset($dbg[1]["line"]) ? $dbg[1]["line"] : "null";
-
-        $file = isset($dbg[1]["file"]) ? $dbg[1]["file"] : "null";
-
         $class = isset($dbg[1]["class"]) ? $dbg[1]["class"] : "null";
+
+        if($e !== null) {//TODO: msg
+            $line = $e->getLine();
+            $file = $e->getFile();
+        } else {
+            $line = isset($dbg[1]["line"]) ? $dbg[1]["line"] : "null";
+            $file = isset($dbg[1]["file"]) ? $dbg[1]["file"] : "null";
+        }
 
         $info = " line." . $line . " at " . $fun . " in " . $class . " file:" . $file;
 
