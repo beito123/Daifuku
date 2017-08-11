@@ -109,6 +109,10 @@ class ProviderSQLite implements Provider {
             return false;
         }
 
+        if(!$this->existsWorldData($world)) {
+            $this->createWorldData($world);
+        }
+
         $data = [];
         if($correct) {
             $data = $this->pdo->query("SELECT * FROM " . $world . " WHERE addtime = (SELECT MAX(addtime) FROM " . $world . " WHERE addtime_hour = " . $time . ");")->fetchAll();
@@ -124,6 +128,10 @@ class ProviderSQLite implements Provider {
             return false;
         }
 
+        if(!$this->existsWorldData($world)) {
+            $this->createWorldData($world);
+        }
+
         if($time < 0) {
             $time = $this->getLastTime($world);
         }
@@ -137,8 +145,13 @@ class ProviderSQLite implements Provider {
                 $data[] = $d;
                 $time = $d["addtime_hour"];
             } else {
-                if(!$current) {
-                    $time = $this->getLastTime($world, $time);
+                if(!$correct) {
+                    $last = $this->getLastTime($world, $time);
+                    if($last === false) {
+                        break;
+                    }
+
+                    $time = $last;
                     --$i;
                 }
             }

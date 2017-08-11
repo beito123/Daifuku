@@ -48,8 +48,6 @@ class CacheStore {
 
         $path = $this->getCachePath($key);
 
-        echo $path . "\n";
-
         $dir = dirname($path);
         if(!file_exists($dir) and !is_dir($dir)) {
             @mkdir($dir);

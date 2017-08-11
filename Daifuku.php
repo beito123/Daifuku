@@ -36,7 +36,7 @@ class Daifuku {
     }
 
     public function getData($world, $every, $count, $cache = true) {
-        if(!$this->isRegisteredWorld()) {
+        if(!$this->isRegisteredWorld($world)) {
             return false;
         }
 

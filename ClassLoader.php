@@ -12,7 +12,6 @@ class ClassLoader {
      * @return bool 成功すればtrue
      */
     public static function loadClass($class){
-    	echo "test:" . $class . "\n";
         foreach (self::directories() as $directory) {
             $file_name = $directory . "/". $class . ".php";
             
