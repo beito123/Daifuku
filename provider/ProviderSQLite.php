@@ -157,7 +157,7 @@ class ProviderSQLite implements Provider {
             }
         }
 
-        return $data;
+        return array_reverse($data);
     }
 
     public function getWorldInfoRange($world, $every, $count, $from, $to) {

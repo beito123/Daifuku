@@ -13,6 +13,7 @@ class ClassLoader {
      */
     public static function loadClass($class){
         foreach (self::directories() as $directory) {
+            $class = str_replace("\\", "/", $class);
             $file_name = $directory . "/". $class . ".php";
             
             if (is_file($file_name)) {

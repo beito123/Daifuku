@@ -108,8 +108,12 @@ class Daifuku {
             }
         }
 
+        foreach($data as $k => $v) {
+            $data[$k] = array_reverse($v);
+        }
+
         $list = [
-            "date" => $ndate,
+            "date" => array_reverse($ndate),
             "data" => $data
         ];
 
@@ -118,7 +122,7 @@ class Daifuku {
         return $list;
     }
 
-    public function collectData(Parser $parser, $world, $try = 2) {
+    public function collectData(Parser $parser, $world, $timeout = 5, $try = 2) {
         if(!isset($this->worlds[$world])) {
             return false;
         }
@@ -126,7 +130,7 @@ class Daifuku {
         $url = $this->worlds[$world];
         $opts = array(
             CURLOPT_USERAGENT => "JagaBot/1.0",
-            CURLOPT_TIMEOUT_MS => 5 * 1000
+            CURLOPT_TIMEOUT_MS => $timeout * 1000
         );
 
         $buf = "";
